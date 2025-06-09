@@ -1,0 +1,17 @@
+{:paths ["src/bb"]
+ :tasks
+ {:requires ([tasks :as t])
+
+  prep (t/prep-libs)
+
+  dev (t/dev)
+
+  
+  test:all (t/lazytest []
+                       [:test.paths/main])
+
+  test:all-w (t/lazytest []
+                         [:test.paths/main]
+                         "--watch"
+                         "--delay 1000")}}
+

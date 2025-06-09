@@ -1,0 +1,6 @@
+.cpcache
+.lsp
+
+.nrepl-port
+.clj-kondo/**
+!.clj-kondo/config.edn
