@@ -1,5 +1,6 @@
 (ns fr.jeremyschoffen.pedestal.datastar.http-kit
   (:require
+    [clojure.core.async :refer [<! go]]
     [org.httpkit.server :as hk-server]
     [starfederation.datastar.clojure.adapter.common :as ac]
     [starfederation.datastar.clojure.adapter.http-kit.impl :as impl]
@@ -20,6 +21,9 @@
 (def-clone buffered-writer-profile      ac/buffered-writer-profile)
 (def-clone gzip-profile                 ac/gzip-profile)
 (def-clone gzip-buffered-writer-profile ac/gzip-buffered-writer-profile)
+
+
+(def commited-ch-key :io.pedestal.http.request/response-commited-ch)
 
 
 (defn ->sse-response
@@ -52,7 +56,8 @@
   "
   [ring-request {:keys [status] :as opts}]
   {:pre [(ac/on-open opts)]}
-  (let [on-open-cb (ac/on-open opts)
+  (let [commited-ch (commited-ch-key ring-request)
+        on-open-cb (ac/on-open opts)
         on-close-cb (ac/on-close opts)
         future-send! (promise)
         future-gen (promise)]
@@ -64,7 +69,10 @@
                  sse-gen (impl/->sse-gen ch send! opts)]
              (deliver future-gen sse-gen)
              (deliver future-send! send!)
-             (on-open-cb sse-gen)))
+ 
+             (go
+               (<! commited-ch)
+               (on-open-cb sse-gen))))
 
          :on-close
          (fn [_ status]

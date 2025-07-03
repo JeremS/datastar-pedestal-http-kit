@@ -13,6 +13,7 @@
   (d*hk/->sse-response req
     {d*hk/on-open
      (fn [sse]
+       (d*/execute-script! sse "hello")
        (swap! !conns conj sse))
 
      d*hk/on-close
