@@ -58,7 +58,7 @@
   ;; curl -vv http://localhost:8080
 
   ;; Broadcast Datastar events
-  (broadcast #(d*/merge-fragment! % "toto"))
+  (broadcast #(d*/patch-elements! % "toto"))
   (broadcast #(d*/execute-script! % "console.log('titi')"))
 
   ;; You can close SSE generators from here or CTRL-c in the terminal
