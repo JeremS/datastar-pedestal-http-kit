@@ -1,12 +1,8 @@
 {:paths ["src/main"]
 
  :deps {
-        datastar/sdk      {:git/url "https://github.com/starfederation/datastar-clojure"
-                           :git/sha "1ef2ae5f870624b086c5099f1b60b20018c7317c"
-                           :deps/root "sdk/"}
-        datastar/http-kit {:git/url "https://github.com/starfederation/datastar-clojure"
-                           :git/sha "1ef2ae5f870624b086c5099f1b60b20018c7317c"
-                           :deps/root "sdk-adapter-http-kit/"}
+        dev.data-star.clojure/sdk      {:mvn/version "1.0.0-RC1"}
+        dev.data-star.clojure/http-kit {:mvn/version "1.0.0-RC1"}
         io.pedestal/pedestal.http-kit {:mvn/version "0.8.0-alpha-7"}}
  
 
